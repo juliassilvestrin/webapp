@@ -1,5 +1,10 @@
 console.log("connected");
 
+
+const apiUrl = window.location.protocol === 'file:'
+    ? 'http://localhost:8080' // Local API server during development
+    : ''; // Production API
+
 let movieReviewWrapper = document.querySelector("#reviewList");
 
 function addMovieReview(record) {
@@ -103,7 +108,7 @@ function clearInputFields() {
 function loadMoviesFromServer() {
     movieReviewWrapper.innerHTML = "";
 
-    fetch("http://localhost:8080/movies")
+    fetchfetch(`${apiUrl}/movies`) //make sure its right
         .then(response => response.json())
         .then(data => {
             data.forEach(addMovieReview);
@@ -111,7 +116,7 @@ function loadMoviesFromServer() {
 }
 
 function createMovie(data) {
-    fetch("http://localhost:8080/movies", {
+    fetch(`${apiUrl}/movies`, {
         method: "POST",
         body: data,
         headers: {
@@ -135,7 +140,7 @@ function createMovie(data) {
 //}
 
 function deleteMovie(id) {
-    fetch(`http://localhost:8080/movies/${id}`, {
+    fetch(`${apiUrl}/movies/${id}`, {
         method: "DELETE"
     }).then(() => {
         loadMoviesFromServer();
